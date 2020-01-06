@@ -55,9 +55,17 @@ function Book({ title, onClick }) {
   );
 }
 
-function Continue() {
+function Continue({show, onContinue}) {
   return (
-    <div />
+    <div className="row continue">
+      {
+        show?
+        <div className="col-11">
+          <button className="btn btn-primary btn-left float-right" onClick={onContinue}>Next question</button>
+        </div>
+        : null
+      }
+    </div>
   );
 }
 
@@ -70,12 +78,12 @@ function Footer() {
   );
 }
 
-function AuthorQuiz({ turnData, highlight, onAnswerSelected }) {
+function AuthorQuiz({ turnData, highlight, onAnswerSelected, onContinue }) {
   return (
     <div className="container-fluid">
       <Hero />
       <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
-      <Continue />
+      <Continue show={highlight==='correct'} onContinue={onContinue} />
       <p><Link to="/add"/>Add an author</p>
       <Footer />
     </div>
