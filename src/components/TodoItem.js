@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from './Checkbox';
-import { DeleteButton } from './DeleteButton';
+import FormCheck from 'react-bootstrap/FormCheck'
+import CloseButton from 'react-bootstrap/CloseButton';
 
 export const TodoItem = ({ id, description, done, onCheck, onDelete }) => {
+    const defaultChecked = done ? done : false;
+    const [isChecked, setIsChecked] = useState(defaultChecked);
+
+    const onCheckUpdate = () => {
+        setIsChecked((prev) => !prev)
+        onCheck(id, isChecked);
+    };
+
     return (
-        <div className="todo-item">
-            <Checkbox id={id} checked={done} onCheck={onCheck} />
-            <label htmlFor={id} className="todo-item__label">{description}</label>
-            <DeleteButton id={id} onClick={onDelete} />
-        </div>
+        <FormCheck>
+            <FormCheck.Input type="radio" checked={isChecked} onClick={onCheckUpdate} />
+            <FormCheck.Label>
+                {description}
+                <CloseButton onClick={() => onDelete(id)} />
+            </FormCheck.Label>
+        </FormCheck>
     );
 }
 

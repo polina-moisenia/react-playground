@@ -8,11 +8,11 @@ export const TodoList = () => {
         { id: "2", description: "Second Todo", done: false }
     ]);
 
-    const onItemChecked = (id) => {
+    const onItemChecked = (id, isDone) => {
         const index = todos.findIndex(i => i.id === id);
         const result = [
             ...todos.slice(0, index),
-            { id, description: todos[index].description, done: true },
+            { id, description: todos[index].description, done: isDone },
             ...todos.slice(index + 1, todos.length),
         ];
 
