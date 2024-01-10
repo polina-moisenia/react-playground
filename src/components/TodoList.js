@@ -8,20 +8,41 @@ export const TodoList = () => {
         { id: "2", description: "Second Todo", done: false }
     ]);
 
-    const addItem = (input) => {
-        const newTodoItem = { ...input, done: false };
+    const onItemChecked = (id) => {
+        const index = todos.findIndex(i => i.id === id);
+        const result = [
+            ...todos.slice(0, index),
+            { id, description: todos[index].description, done: true },
+            ...todos.slice(index + 1, todos.length),
+        ];
 
-        setTodos([...todos, newTodoItem]);
+        setTodos(result);
+    }
+
+    const onItemDeleted = (id) => {
+        setTodos([...todos.filter(i => i.id !== id)]);
+    }
+
+    const onItemAdded = (input) => {
+        setTodos([...todos, { ...input, done: false }]);
     }
 
     return (
-        <div className="App">
+        <div className="todo-list">
             <h2>Todos</h2>
-            {
-                todos.map(todo => <TodoItem key={todo.id} id={todo.id} description={todo.description} done={todo.done} />)
-            }
 
-            <NewItem onSubmit={addItem} />
+            <NewItem onSubmit={onItemAdded} />
+            {
+                todos.map(todo =>
+                    <TodoItem
+                        key={todo.id}
+                        id={todo.id}
+                        description={todo.description}
+                        done={todo.done}
+                        onCheck={onItemChecked}
+                        onDelete={onItemDeleted}
+                    />)
+            }
         </div>
     );
 }
