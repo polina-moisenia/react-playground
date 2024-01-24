@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import FormCheck from 'react-bootstrap/FormCheck'
-import CloseButton from 'react-bootstrap/CloseButton';
 
 export const TodoItem = ({ id, description, done, onCheck, onDelete }) => {
     const defaultChecked = done ? done : false;
@@ -13,13 +11,13 @@ export const TodoItem = ({ id, description, done, onCheck, onDelete }) => {
     };
 
     return (
-        <FormCheck>
-            <FormCheck.Input type="radio" checked={isChecked} onClick={onCheckUpdate} />
-            <FormCheck.Label>
-                {description}
-                <CloseButton onClick={() => onDelete(id)} />
-            </FormCheck.Label>
-        </FormCheck>
+        <div className='todo-item'>
+            <div className="todo-item__content">
+                <input type="radio" name="checked" checked={isChecked} onClick={onCheckUpdate} />
+                <label htmlFor="checked" >{description}</label>
+            </div>
+            <button onClick={() => onDelete(id)}>x</button>
+        </div>
     );
 }
 
