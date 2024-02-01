@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteItem, checkItem } from './../store/itemsSlice';
 
-export const TodoItem = ({ id, description, done, onCheck, onDelete }) => {
+export const TodoItem = ({ id, description, done }) => {
     const defaultChecked = done ? done : false;
     const [isChecked, setIsChecked] = useState(defaultChecked);
+    const dispatch = useDispatch();
 
     const onCheckUpdate = () => {
-        setIsChecked((prev) => !prev)
-        onCheck(id, isChecked);
+        
+        
+        dispatch(deleteItem({ id, checked: !isChecked }));
+        setIsChecked((prev) => !prev);
     };
+
+    const onDelete = () => {
+        dispatch(checkItem(id));
+    }
 
     return (
         <div className='todo-item'>
             <div className="todo-item__content">
-                <input type="radio" name="checked" checked={isChecked} onClick={onCheckUpdate} />
-                <label htmlFor="checked" >{description}</label>
+                <input type="checkbox" name="checked" defaultChecked={done} onChange={onCheckUpdate} />
+                <label htmlFor="checked" >{description} {done}</label>
             </div>
             <button onClick={() => onDelete(id)}>x</button>
         </div>
@@ -24,7 +33,5 @@ export const TodoItem = ({ id, description, done, onCheck, onDelete }) => {
 TodoItem.propTypes = {
     id: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    done: PropTypes.bool.isRequired,
-    onCheck: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
+    done: PropTypes.bool.isRequired
 }
